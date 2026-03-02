@@ -1,0 +1,577 @@
+/* CSS Variables for consistent theming */
+:root {
+    --primary-color: #3b82f6;
+    /* Blue */
+    --secondary-color: #10b981;
+    /* Green */
+    --accent-color: #f59e0b;
+    /* Orange for hints */
+    --danger-color: #ef4444;
+    /* Red for errors */
+    --background: #f8fafc;
+    /* Light Gray/Blue */
+    --surface: #ffffff;
+    /* White */
+    --text-primary: #1e293b;
+    /* Dark Slate */
+    --text-secondary: #64748b;
+    /* Slate */
+    --border-radius: 12px;
+}
+
+/* Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Tajawal', sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Layout Containers */
+.app-layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    flex-wrap: wrap;
+    /* for responsiveness */
+}
+
+/* Leaderboard Sidebar */
+.leaderboard-sidebar {
+    width: 300px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    align-self: flex-start;
+    position: sticky;
+    top: 20px;
+    display: none;
+    /* hidden by default until game starts */
+}
+
+.leaderboard-sidebar.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.leaderboard-sidebar h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    border-bottom: 2px solid #e0f2fe;
+    padding-bottom: 10px;
+    direction: auto;
+    background: none;
+    border: none;
+    border-bottom: 2px solid #e0f2fe;
+}
+
+#leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    margin-bottom: 5px;
+}
+
+.leaderboard-item.current-student {
+    background: #e0f2fe;
+    border: 2px solid #38bdf8;
+    font-weight: bold;
+}
+
+.leaderboard-rank {
+    width: 25px;
+    height: 25px;
+    background: #cbd5e1;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.leaderboard-name {
+    flex: 1;
+    margin: 0 10px;
+    text-align: right;
+}
+
+.leaderboard-score {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.container {
+    background-color: var(--surface);
+    flex: 1;
+    min-width: 0;
+    /* allows flex items to shrink in some layouts */
+    max-width: 800px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    overflow: visible;
+    /* Changed from hidden to allow dropdowns to overflow */
+    position: relative;
+    padding-bottom: 30px;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+#student-info,
+#score-info {
+    font-size: 1rem;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+/* Screens Management */
+.screen {
+    padding: 40px;
+    display: none;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.screen.active {
+    display: block;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Progress Bar */
+#progress-container {
+    width: 100%;
+    height: 8px;
+    background-color: #e2e8f0;
+}
+
+#progress-bar {
+    height: 100%;
+    background-color: var(--secondary-color);
+    width: 0%;
+    transition: width 0.4s ease;
+}
+
+/* Typography and Elements */
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+h3 {
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    direction: ltr;
+    /* Equations are left to right */
+    display: inline-block;
+    padding: 10px 20px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    min-width: 200px;
+    /* To prevent jumping during MathJax rendering */
+}
+
+p {
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Inputs and Buttons */
+/* Custom Select Dropdown to Support MathJax */
+.custom-select {
+    position: relative;
+    width: 100%;
+    min-width: 250px;
+    max-width: 300px;
+    font-size: 1.2rem;
+    text-align: right;
+}
+
+.select-selected {
+    background-color: white;
+    padding: 12px 20px;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    direction: ltr;
+    /* keep math formulas LTR */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 54px;
+    transition: border-color 0.3s;
+}
+
+.select-selected:after {
+    content: "▼";
+    font-size: 0.8em;
+    color: #64748b;
+    margin-left: 10px;
+}
+
+.select-selected.select-arrow-active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-color: var(--primary-color);
+}
+
+.select-items {
+    position: absolute;
+    background-color: white;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    /* Increased z-index to stay on top */
+    border: 2px solid var(--primary-color);
+    border-top: none;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    max-height: 400px;
+    /* Increased to show more options */
+    overflow-y: auto;
+    direction: ltr;
+    /* Math formatting direction */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.select-items div {
+    padding: 10px 20px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid #e2e8f0;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.select-items div:last-child {
+    border-bottom: none;
+}
+
+.select-items div:hover {
+    background-color: #f8fafc;
+}
+
+.select-hide {
+    display: none;
+}
+
+.input-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn.primary {
+    background-color: var(--primary-color);
+    color: white;
+    margin-top: 20px;
+}
+
+.btn.primary:hover {
+    background-color: #2563eb;
+}
+
+.btn.secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn.secondary:hover {
+    background-color: #059669;
+}
+
+.teacher-link {
+    display: block;
+    margin-top: 30px;
+    color: #94a3b8;
+    text-decoration: underline;
+    font-size: 0.9rem;
+}
+
+/* Level Indicator */
+.level-indicator {
+    background-color: #dbeafe;
+    color: #1e40af;
+    padding: 8px 20px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Steps Layout */
+#steps-container {
+    margin-bottom: 30px;
+    text-align: right;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.step-card {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    animation: fadeIn 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.step-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.step-math {
+    background: white;
+    padding: 5px 15px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    direction: ltr;
+    font-weight: bold;
+    font-size: 1.2rem;
+    font-family: monospace;
+}
+
+/* Tutorial Styling */
+#tutorial-container {
+    background: #e0f2fe;
+    border: 2px solid #bae6fd;
+    text-align: right;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+#tutorial-title {
+    color: #0284c7;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.tutorial-equation {
+    font-size: 1.8rem;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    display: inline-block;
+    direction: ltr;
+    margin-bottom: 20px;
+}
+
+.tutorial-steps-container {
+    text-align: right;
+}
+
+.tutorial-step {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.tutorial-step.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tutorial-step-text {
+    font-size: 1.1rem;
+    color: #334155;
+    flex: 1;
+}
+
+.tutorial-step-math {
+    font-size: 1.3rem;
+    direction: ltr;
+    font-weight: bold;
+    background: #f1f5f9;
+    padding: 5px 15px;
+    border-radius: 6px;
+    margin-right: 15px;
+}
+
+/* Feedback Styling */
+.feedback {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+.feedback.success {
+    display: block;
+    background-color: #d1fae5;
+    color: #065f46;
+    border-left: 5px solid var(--secondary-color);
+}
+
+.feedback.error {
+    display: block;
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-left: 5px solid var(--danger-color);
+}
+
+.feedback.hint {
+    display: block;
+    background-color: #fef3c7;
+    color: #92400e;
+    border-left: 5px solid var(--accent-color);
+}
+
+/* Input Area Specific */
+.input-area {
+    background: #f1f5f9;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+}
+
+#instruction-text {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* End Screen Stats */
+.stats {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 30px 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.stats p {
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+/* Shake Animation for Error */
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(5px);
+    }
+
+    50% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .leaderboard-sidebar {
+        width: 100%;
+        position: static;
+        order: -1;
+        /* appear above content on mobile occasionally, or let it fall below */
+    }
+}

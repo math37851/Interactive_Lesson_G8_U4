@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة المعلم - متابعة تقدم الطلاب (أنظمة المعادلات)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #334155;
+            font-weight: 700;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .level-1 {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .level-2 {
+            background-color: #fef08a;
+            color: #854d0e;
+        }
+
+        .level-3 {
+            background-color: #bbf7d0;
+            color: #166534;
+        }
+
+        .refresh-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #2563eb;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .analysis-section {
+            background-color: #fffbeb;
+            border: 2px solid #fde68a;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .analysis-section h3 {
+            color: #b45309;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .analysis-table th {
+            background-color: #fef08a;
+            color: #854d0e;
+        }
+
+        .count-badge {
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            padding: 4px 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body class="teacher-view">
+    <div class="dashboard-container">
+        <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #e2e8f0;">
+            <div style="font-size: 1.1rem; font-weight: bold; color: #64748b; margin-bottom: 5px;">مدرسة سعيد بن زيد
+                الإعدادية - قسم الرياضيات</div>
+            <div style="font-size: 1.2rem; font-weight: bold; color: #3b82f6; margin-bottom: 5px;">دعم وتثبيت المهارات
+                الرياضية</div>
+            <div style="font-size: 1.3rem; font-weight: bold; color: #f59e0b; margin-bottom: 5px;">أنظمة المعادلات
+                الخطية - الوحدة الرابعة</div>
+        </div>
+
+        <div class="header-actions">
+            <h2>لوحة المتابعة والمراقبة (التقويم من أجل التعلم)</h2>
+            <button class="refresh-btn" onclick="loadStudents()">تحديث البيانات 🔄</button>
+        </div>
+
+        <div class="analysis-section" id="analysis-container" style="display: none;">
+            <h3>📊 تحليل المهارات المفقودة (نقاط الضعف الجماعية)</h3>
+            <p style="font-size: 0.9em; color: #666;">يوضح هذا الجدول المهارات المحددة التي أخطأ فيها الطلاب وعدد الذين
+                يحتاجون لإعادة شرحها.</p>
+            <table class="analysis-table">
+                <thead>
+                    <tr>
+                        <th style="width: 70%; text-align: right;">المهارة / الخطأ الشائع</th>
+                        <th>عدد الطلاب المخطئين</th>
+                    </tr>
+                </thead>
+                <tbody id="skills-analysis-body">
+                    <!-- سيتم تعبئة التحليل هنا بواسطة JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <h3 style="margin-top: 30px; border-bottom: 2px solid #efefef; padding-bottom: 10px;">📋 تفاصيل تقدم الطلاب</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>اسم الطالب</th>
+                    <th>مستوى التقدم</th>
+                    <th>النقاط</th>
+                    <th>الأخطاء والمهارات المفقودة</th>
+                    <th>وقت البدء</th>
+                </tr>
+            </thead>
+            <tbody id="students-table-body">
+                <!-- سيتم تعبئة البيانات هنا بواسطة JavaScript -->
+            </tbody>
+        </table>
+
+        <div style="margin-top: 20px; text-align: center;">
+            <button onclick="clearData()" style="background: #ef4444;" class="refresh-btn">مسح بيانات الجلسة
+                الحالية</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+
+        // !ضع رابط قاعدة بيانات Firebase الخاصة بك هنا (يجب أن يكون مطابقاً لما هو في script.js)!
+        const firebaseConfig = {
+            databaseURL: "https://interactive-lesson-de2d9-default-rtdb.firebaseio.com/"
+        };
+
+        let app, db;
+        let useFirebase = false;
+
+        if (firebaseConfig.databaseURL && !firebaseConfig.databaseURL.includes("REPLACE_WITH")) {
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getDatabase(app);
+                useFirebase = true;
+            } catch (e) {
+                console.warn("فشل الاتصال بـ Firebase، سيتم استخدام LocalStorage كبديل.", e);
+            }
+        }
+
+        // دالة عرض وتحليل المهارات المفقودة
+        function renderSkillsAnalysis(studentsData) {
+            const analysisContainer = document.getElementById('analysis-container');
+            const analysisBody = document.getElementById('skills-analysis-body');
+
+            if (!studentsData || Object.keys(studentsData).length === 0) {
+                analysisContainer.style.display = 'none';
+                return;
+            }
+
+            // تجميع المهارات
+            let skillCounts = {};
+            let hasErrors = false;
+
+            for (const data of Object.values(studentsData)) {
+                if (data.failedSkills && data.failedSkills.length > 0) {
+                    hasErrors = true;
+                    data.failedSkills.forEach(skill => {
+                        skillCounts[skill] = (skillCounts[skill] || 0) + 1;
+                    });
+                }
+            }
+
+            if (!hasErrors) {
+                analysisContainer.style.display = 'none';
+                return;
+            }
+
+            // تحويل إلى مصفوفة للترتيب التنازلي
+            let sortedSkills = Object.keys(skillCounts).map(skill => {
+                return { name: skill, count: skillCounts[skill] };
+            }).sort((a, b) => b.count - a.count);
+
+            // عرض البيانات
+            analysisBody.innerHTML = '';
+            sortedSkills.forEach(skillObj => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="text-align: right; font-weight: bold; color: #475569;">${skillObj.name}</td>
+                    <td><span class="count-badge">${skillObj.count}</span> طلاب</td>
+                `;
+                analysisBody.appendChild(tr);
+            });
+
+            analysisContainer.style.display = 'block';
+        }
+
+        // دالة عرض البيانات في الجدول
+        function renderStudents(studentsData) {
+            const tableBody = document.getElementById('students-table-body');
+            tableBody.innerHTML = '';
+
+            if (!studentsData || Object.keys(studentsData).length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5">لا يوجد طلاب مسجلون حالياً</td></tr>';
+                return;
+            }
+
+            for (const [name, data] of Object.entries(studentsData)) {
+                // فلتر لعرض الطلاب الذين في lesson U4، نحن سنستخدم نفس الـ students object للتبسيط أو سننشئ u4_students
+                // لتجنب التعارض، يجب أن نغير اسم الstorage للوحة. تم تعيير localstorage الى math_lesson_u4_students لاحقاً.
+                let badgeClass = '';
+                let levelName = '';
+
+                switch (data.level) {
+                    case 1: badgeClass = 'level-1'; levelName = 'المستوى الأول (استكشاف)'; break;
+                    case 2: badgeClass = 'level-2'; levelName = 'المستوى الثاني (تطبيق)'; break;
+                    case 3: badgeClass = 'level-3'; levelName = 'المستوى الثالث (تحدي)'; break;
+                    case 4: badgeClass = 'level-3'; levelName = 'المستوى الرابع (اختبار نهائي)'; break;
+                    default: badgeClass = 'level-3'; levelName = 'العودة للمنزل (مكتمل)';
+                }
+
+                let errorsText = `<div style="font-weight:bold; margin-bottom: 5px;">${data.errors > 0 ? `أخطأ ${data.errors} مرة` : 'لم يخطئ 🎉'}</div>`;
+                let skillsDiv = '';
+                if (data.failedSkills && data.failedSkills.length > 0) {
+                    let skillsList = data.failedSkills.map(s => `<li>${s}</li>`).join('');
+                    skillsDiv = `<ul style="margin-top: 5px; padding-right: 20px; text-align: right; color: #b91c1c; font-size: 0.9em;">${skillsList}</ul>`;
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight: bold;">${name}</td>
+                    <td><span class="level-badge ${badgeClass}">${levelName}</span></td>
+                    <td dir="ltr" style="font-weight: bold; color: #0284c7;">${data.score} / ${data.totalScore || '-'}</td>
+                    <td style="text-align: right; vertical-align: top;">
+                        ${errorsText}
+                        ${skillsDiv}
+                    </td>
+                    <td>${data.timeStarted || 'غير محدد'}</td>
+                `;
+                tableBody.appendChild(tr);
+            }
+
+            // تحديث جدول التحليل مع كل تحديث للطلاب
+            renderSkillsAnalysis(studentsData);
+        }
+
+        window.loadStudents = function () {
+            if (!useFirebase) {
+                // جلب البيانات من LocalStorage
+                let studentsData = JSON.parse(localStorage.getItem('math_lesson_u4_students')) || {};
+                renderStudents(studentsData);
+            }
+        };
+
+        window.clearData = function () {
+            if (confirm('هل أنت متأكد من مسح جميع بيانات الطلاب الحالية لدرس أنظمة المعادلات؟')) {
+                if (useFirebase) {
+                    remove(ref(db, 'u4_students')).then(() => {
+                        renderStudents({});
+                        renderSkillsAnalysis({});
+                    }).catch(error => {
+                        console.error("خطأ في مسح البيانات السحابية: ", error);
+                    });
+                } else {
+                    localStorage.removeItem('math_lesson_u4_students');
+                    renderStudents({});
+                    renderSkillsAnalysis({});
+                }
+            }
+        };
+
+        // التهيئة وبدء الاستماع
+        if (useFirebase) {
+            const studentsRef = ref(db, 'u4_students'); // فصل البيانات عن الدرس الأول
+            // استماع مباشر للتحديثات السحابية اللحظية من جميع الجوالات حول العالم!
+            onValue(studentsRef, (snapshot) => {
+                const data = snapshot.val() || {};
+                renderStudents(data);
+            });
+        } else {
+            // التحميل الأولي (محلياً)
+            window.loadStudents();
+            // تحديث تلقائي كل 10 ثواني (محاكاة للاتصال المباشر)
+            setInterval(window.loadStudents, 10000);
+
+            // استماع للتحديثات بين صفحات متصفح المعلم إن وجدت
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'math_lesson_u4_students') {
+                    window.loadStudents();
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
