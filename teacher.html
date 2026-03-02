@@ -129,7 +129,25 @@
 
         <div class="header-actions">
             <h2>لوحة المتابعة والمراقبة (التقويم من أجل التعلم)</h2>
-            <button class="refresh-btn" onclick="loadStudents()">تحديث البيانات 🔄</button>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <label for="class-filter" style="font-weight: bold; color: #334155;">الشعبة:</label>
+                <select id="class-filter"
+                    style="padding: 8px 15px; border-radius: 8px; border: 2px solid #cbd5e1; outline: none; font-family: inherit; font-size: 1rem; cursor: pointer;"
+                    onchange="applyFilter()">
+                    <option value="all" selected>جميع الشعب</option>
+                    <option value="08/1">08/1</option>
+                    <option value="08/2">08/2</option>
+                    <option value="08/3">08/3</option>
+                    <option value="08/4">08/4</option>
+                    <option value="08/5">08/5</option>
+                    <option value="08/6">08/6</option>
+                    <option value="08/7">08/7</option>
+                    <option value="08/8">08/8</option>
+                    <option value="08/9">08/9</option>
+                    <option value="08/10">08/10</option>
+                </select>
+                <button class="refresh-btn" onclick="loadStudents()">تحديث البيانات 🔄</button>
+            </div>
         </div>
 
         <div class="analysis-section" id="analysis-container" style="display: none;">
@@ -155,6 +173,7 @@
             <thead>
                 <tr>
                     <th>اسم الطالب</th>
+                    <th>الشعبة</th>
                     <th>مستوى التقدم</th>
                     <th>النقاط</th>
                     <th>الأخطاء والمهارات المفقودة</th>
@@ -241,17 +260,34 @@
             analysisContainer.style.display = 'block';
         }
 
+        let globalStudentsData = {};
+
         // دالة عرض البيانات في الجدول
         function renderStudents(studentsData) {
+            globalStudentsData = studentsData || {};
+            const selectedClass = document.getElementById('class-filter').value;
+
+            let filteredData = {};
+            if (selectedClass === 'all') {
+                filteredData = globalStudentsData;
+            } else {
+                for (const [name, data] of Object.entries(globalStudentsData)) {
+                    if (data.class === selectedClass) {
+                        filteredData[name] = data;
+                    }
+                }
+            }
+
             const tableBody = document.getElementById('students-table-body');
             tableBody.innerHTML = '';
 
-            if (!studentsData || Object.keys(studentsData).length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5">لا يوجد طلاب مسجلون حالياً</td></tr>';
+            if (Object.keys(filteredData).length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6">لا يوجد طلاب مسجلون حالياً في هذه الشعبة</td></tr>';
+                renderSkillsAnalysis({});
                 return;
             }
 
-            for (const [name, data] of Object.entries(studentsData)) {
+            for (const [name, data] of Object.entries(filteredData)) {
                 // فلتر لعرض الطلاب الذين في lesson U4، نحن سنستخدم نفس الـ students object للتبسيط أو سننشئ u4_students
                 // لتجنب التعارض، يجب أن نغير اسم الstorage للوحة. تم تعيير localstorage الى math_lesson_u4_students لاحقاً.
                 let badgeClass = '';
@@ -275,6 +311,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td style="font-weight: bold;">${name}</td>
+                    <td style="color: #64748b; font-weight: bold;">${data.class || '-'}</td>
                     <td><span class="level-badge ${badgeClass}">${levelName}</span></td>
                     <td dir="ltr" style="font-weight: bold; color: #0284c7;">${data.score} / ${data.totalScore || '-'}</td>
                     <td style="text-align: right; vertical-align: top;">
@@ -287,8 +324,12 @@
             }
 
             // تحديث جدول التحليل مع كل تحديث للطلاب
-            renderSkillsAnalysis(studentsData);
+            renderSkillsAnalysis(filteredData);
         }
+
+        window.applyFilter = function () {
+            renderStudents(globalStudentsData);
+        };
 
         window.loadStudents = function () {
             if (!useFirebase) {

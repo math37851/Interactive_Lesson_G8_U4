@@ -46,7 +46,8 @@
                 <div style="width: 100%; display: flex; justify-content: space-between; margin-top: 15px;">
                     <div id="student-info" class="hidden">
                         المرحلة: <span id="current-level-display">1</span> -
-                        الطالب: <span id="student-name-display"></span>
+                        الطالب: <span id="student-name-display"></span> -
+                        الشعبة: <span id="student-class-display"></span>
                     </div>
                     <div id="score-info" class="hidden">
                         النقاط: <span id="score-display">0</span> / <span id="total-score-display">0</span>
@@ -62,8 +63,21 @@
             <!-- Login Screen -->
             <div id="login-screen" class="screen active">
                 <h2>مرحباً بك يا بطل! 👋</h2>
-                <p>أمامك 35 دقيقة لإثبات مهارتك في حل أنظمة المعادلات الخطية. ستنتقل عبر 3 مستويات من التحدي.</p>
-                <input type="text" id="student-name" placeholder="أدخل اسمك الكريم هنا..." required>
+                <select id="student-class" class="dropdown-input custom-login-input" required>
+                    <option value="" disabled selected>اختر الشعبة...</option>
+                    <option value="08/1">08/1</option>
+                    <option value="08/2">08/2</option>
+                    <option value="08/3">08/3</option>
+                    <option value="08/4">08/4</option>
+                    <option value="08/5">08/5</option>
+                    <option value="08/6">08/6</option>
+                    <option value="08/7">08/7</option>
+                    <option value="08/8">08/8</option>
+                    <option value="08/9">08/9</option>
+                    <option value="08/10">08/10</option>
+                </select>
+                <input type="text" id="student-name" class="custom-login-input" placeholder="أدخل اسمك الكريم هنا..."
+                    required>
                 <button id="start-btn" class="btn primary">ابدأ التحدي 🚀</button>
             </div>
 
@@ -78,7 +92,8 @@
                     <div id="tutorial-steps-container" class="tutorial-steps-container">
                         <!-- Steps will be animated here -->
                     </div>
-                    <button id="start-level-btn" class="btn primary hidden" style="margin-top: 20px;">فهمت، لنبدأ التحدي! 🚀</button>
+                    <button id="start-level-btn" class="btn primary hidden" style="margin-top: 20px;">فهمت، لنبدأ
+                        التحدي! 🚀</button>
                 </div>
 
                 <div class="question-container" id="main-question-container">

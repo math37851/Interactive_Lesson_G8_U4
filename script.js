@@ -139,7 +139,7 @@ const levelsData = [
                     title: "شرح قبل البدء: طريقة الحذف",
                     equation: "\\begin{cases} x + y = 10 \\\\ 2x - y = 5 \\end{cases}",
                     steps: [
-                        { text: "عند رؤية متغير يمتلك معاملين متعاكسين (مثل y و -y)، أو أرقام متعاكسة، فالأفضل جمع المعادلتين رأسياً!", text: "" },
+                        { text: "عند رؤية متغير يمتلك معاملين متعاكسين (مثل y و -y)، أو أرقام متعاكسة، فالأفضل جمع المعادلتين رأسياً!", math: "" },
                         { text: "أولاً: نجمع المعادلتين مما يؤدي لاختفاء (حذف) الـ y تماماً.", math: "$$3x = 15$$" },
                         { text: "ثانياً: نحصل على المتغير الأول.", math: "$$x = 5$$" },
                         { text: "ثالثاً: نعوض بـ x لإيجاد y.", math: "$$5 + y = 10 \\Rightarrow y = 5$$" }
@@ -147,14 +147,14 @@ const levelsData = [
                 },
                 equation: "\\begin{cases} 4x + y = 12 \\\\ 2x - y = 6 \\end{cases}",
                 steps: [
-                    { skill: "تطبيق جمع المعادلتين للحذف", expected: "6x = 18", options: ["2x = 6", "6x = 18", "6x = 6", "2x = 18"], userInstruction: "الخطوة 1: اجمع المعادلتين رأسياً لحذف المتغير y", hint: "اجمع 4x+2x و y مع -y (تحذف) و 12+6", success: "حذف ذكي جداً!" },
+                    { skill: "تطبيق جمع المعادلتين للحذف", expected: "6x = 18", options: ["2x = 6", "6x = 18", "6x = 6", "2x = 18"], userInstruction: "الخطوة 1: اجمع المعادلتين رأسياً لحذف المتغير y", hint: "اجمع (4x+2x) و y مع (-y) -تحذف- و (12+6)", success: "حذف ذكي جداً!" },
                     { skill: "استخراج القيمة الأولى (x)", expected: "x = 3", options: ["x = 3", "x = 6", "x = -3", "x = 9"], userInstruction: "الخطوة 2: استخرج قيمة x من المعادلة البسيطة الناتجة", hint: "انقل المعامل 6 مع قسمة الطرفين على 6", success: "نصف المسافة قد قُطعت." },
                     { skill: "التعويض لحل القيمة المتبقية", expected: "y = 0", options: ["y = 2", "y = 0", "y = 6", "y = -2"], userInstruction: "الخطوة 3: عوض بناتج x في أحد المعادلتين لتعرف قيمة y", hint: "استعمل 4(3) + y = 12 لتعرف قيمة y", success: "عمل متكامل! لقد حللت النظام بنجاح." }
                 ],
                 backup: {
                     equation: "\\begin{cases} 5x + 3y = 19 \\\\ x - 3y = -1 \\end{cases}",
                     steps: [
-                        { skill: "تطبيق جمع المعادلتين للحذف", expected: "6x = 18", options: ["4x = 20", "6x = 18", "6x = 20", "4x = 18"], userInstruction: "سؤال تدريبي: اجمع لحذف 3y و -3y", hint: "اجمع المعادلتين", success: "حذف سليم!" },
+                        { skill: "تطبيق جمع المعادلتين للحذف", expected: "6x = 18", options: ["4x = 20", "6x = 18", "6x = 20", "4x = 18"], userInstruction: "سؤال تدريبي: اجمع لحذف (3y) و (-3y)", hint: "اجمع المعادلتين", success: "حذف سليم!" },
                         { skill: "استخراج القيمة الأولى (x)", expected: "x = 3", options: ["x = 3", "x = 2", "x = 5", "x = 6"], userInstruction: "أوجد قيمة x", hint: "أكمل العملية 6x = 18", success: "ممتاز." },
                         { skill: "التعويض لحل القيمة المتبقية", expected: "y = 4/3", options: ["y = 4/3", "y = 2", "y = 3", "y = 1"], userInstruction: "عوض لنجد y", hint: "يفضل تعويض x=3 في المعادلة الثانية: 3 - 3y = -1، إذن -3y = -4 أي y = 4/3", success: "رائع جداً." }
                     ]
@@ -174,8 +174,8 @@ const levelsData = [
                 },
                 equation: "\\begin{cases} x + y = 6 \\\\ 2x - 3y = -8 \\end{cases}",
                 steps: [
-                    { skill: "ضرب المعادلة لمساواة المعاملات", expected: "3x + 3y = 18", options: ["2x + 2y = 12", "3x + y = 18", "3x + 3y = 18", "-2x - 2y = -12"], userInstruction: "الخطوة 1: اضرب المعادلة الأولى بـ 3 لكي تجعل معامل y هو 3، ليعاكس -3y بالمعادلة الثانية.", hint: "اضرب كل حد في x+y=6 في العدد 3", success: "خطوة تجهيز عبقرية!" },
-                    { skill: "الجمع المباشر بعد التجهيز", expected: "5x = 10", options: ["5x = 10", "x = -2", "5x = 14", "x = 4"], userInstruction: "الخطوة 2: أضف المعادلة الجديدة (3x+3y=18) للمعادلة الثانية (2x-3y=-8) واحذف المتغير", hint: "اجمع 3x+2x والطرف الآخر 18-8", success: "ممتاز، تم التخلص من أصعب جزء." },
+                    { skill: "ضرب المعادلة لمساواة المعاملات", expected: "3x + 3y = 18", options: ["2x + 2y = 12", "3x + y = 18", "3x + 3y = 18", "-2x - 2y = -12"], userInstruction: "الخطوة 1: اضرب المعادلة الأولى بـ 3 لكي تجعل معامل y هو 3، ليعاكس (-3y) بالمعادلة الثانية.", hint: "اضرب كل حد في (x+y=6) في العدد 3", success: "خطوة تجهيز عبقرية!" },
+                    { skill: "الجمع المباشر بعد التجهيز", expected: "5x = 10", options: ["5x = 10", "x = -2", "5x = 14", "x = 4"], userInstruction: "الخطوة 2: أضف المعادلة الجديدة (3x+3y=18) للمعادلة الثانية (2x-3y=-8) واحذف المتغير", hint: "اجمع (3x+2x) والطرف الآخر (18-8)", success: "ممتاز، تم التخلص من أصعب جزء." },
                     { skill: "استخراج القيمة الأولى (x)", expected: "x = 2", options: ["x = 2", "x = -2", "x = 5", "x = 4"], userInstruction: "الخطوة 3: أوجد القيمة x للمتغير", hint: "اقسم على 5", success: "أحسنت." },
                     { skill: "التعويض النهائي لإيجاد القيمة الثانية (y)", expected: "y = 4", options: ["y = 4", "y = 2", "y = -4", "y = 8"], userInstruction: "الخطوة الأخيرة: عوّض بـ x لإيجاد قيمة y النهائية في أسهل معادلة", hint: "أسهل معادلة هي الأصلية الأولى x + y = 6", success: "أنت جاهز لأي مسألة صعبة رياضياً! الحل هوالنقطة (2, 4)." }
                 ]
@@ -189,8 +189,8 @@ const levelsData = [
             {
                 skill: "تطبيق شامل - السؤال الأول",
                 tutorial: {
-                    title: "تعليمات الاختبار النهائي 🏆",
-                    equation: "\\text{حل بدون خطوات إرشادية}",
+                    title: "تعليمات الاختبار النهائي 🏆 - حل بدون خطوات إرشادية",
+                    equation: "",
                     steps: [
                         { text: "في هذا القسم لا توجد مساعدة ولا توجد خطوات جزئية.", math: "" },
                         { text: "استخدم مسودة للحل (ورقة بيضاء خارجية) لحل الأنظمة بأي طريقة تختارها، ثم اختر الحل النهائي فقط.", math: "" }
@@ -222,6 +222,7 @@ const levelsData = [
 // حالة التطبيق
 const appState = {
     studentName: "",
+    studentClass: "",
     currentLevelIndex: 0,
     currentQuestionIndex: 0,
     currentStepIndex: 0,
@@ -247,6 +248,7 @@ const elements = {
         studentInfo: document.getElementById('student-info'),
         scoreInfo: document.getElementById('score-info'),
         nameOut: document.getElementById('student-name-display'),
+        classOut: document.getElementById('student-class-display'),
         levelOut: document.getElementById('current-level-display'),
         scoreOut: document.getElementById('score-display'),
         totalScoreOut: document.getElementById('total-score-display'),
@@ -306,6 +308,8 @@ function generateNumberLineSVG(optStr) {
 // الدالة المسؤولة عن حفظ البيانات وتحديث لوحة المعلم
 function updateTeacherDashboard() {
     let studentData = {
+        name: appState.studentName,
+        class: appState.studentClass,
         level: appState.currentLevelIndex + 1,
         score: appState.score,
         totalScore: appState.totalPossibleScore,
@@ -401,17 +405,28 @@ function calculateTotalPossibleScore() {
 }
 
 document.getElementById('start-btn').addEventListener('click', () => {
+    const classInput = document.getElementById('student-class').value;
     const nameInput = document.getElementById('student-name').value.trim();
+
+    if (!classInput) {
+        alert("الرجاء اختيار الشعبة الخاصة بك.");
+        return;
+    }
+
     if (nameInput === "") {
         alert("الرجاء إدخال اسمك لبدء التحدي.");
         return;
     }
 
+    appState.studentClass = classInput;
     appState.studentName = nameInput;
     appState.timeStarted = new Date().toLocaleTimeString('ar-QA', { hour: '2-digit', minute: '2-digit' });
     appState.totalPossibleScore = calculateTotalPossibleScore();
 
     elements.displays.nameOut.textContent = appState.studentName;
+    if (elements.displays.classOut) {
+        elements.displays.classOut.textContent = appState.studentClass;
+    }
     if (elements.displays.totalScoreOut) {
         elements.displays.totalScoreOut.textContent = appState.totalPossibleScore;
     }
